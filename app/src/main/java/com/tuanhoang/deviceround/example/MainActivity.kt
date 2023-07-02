@@ -6,8 +6,13 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.jaredrummler.android.device.DeviceName
+import androidx.lifecycle.lifecycleScope
 import com.tuanhoang.deviceround.DeviceRound
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.jackson.JacksonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,30 +29,30 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
 
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .hostnameVerifier { _, _ -> true }
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://github.com/")
+            .addConverterFactory(JacksonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+
+        DeviceRound.init(this, retrofit, getSharedPreferences("", MODE_PRIVATE))
+
         binding = com.tuanhoang.deviceround.example.databinding.ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        DeviceName.with(this).request { info, error ->
+        lifecycleScope.launch {
 
-            DeviceRound.getRoundByDeviceName(this, info.name) {
+            DeviceRound.fetchRoundAsync().collect {
 
-                val view = findViewById<RoundedImageView>(R.id.rounded)
-
-                view.setRadius(RoundedImageView.Corner.TOP_LEFT, it[0])
-                view.setRadius(RoundedImageView.Corner.TOP_RIGHT, it[1])
-                view.setRadius(RoundedImageView.Corner.BOTTOM_LEFT, it[2])
-                view.setRadius(RoundedImageView.Corner.BOTTOM_RIGHT, it[3])
-                view.postInvalidate()
-
-                Log.d(
-                    "tuanha", "onCreate: " +
-                        "\nmanufacturer:${info.manufacturer} " +
-                        "\nmarketName:${info.marketName} " +
-                        "\nmodel:${info.model} " +
-                        "\ncodename:${info.codename} " +
-                        "\nname:${info.name} " +
-                        "\nradius:${it.map { it.toString() }}"
-                )
+                Log.d("tuanha", "onCreate: ${Thread.currentThread().name} ${it?.map { it.toString() }}")
             }
         }
     }

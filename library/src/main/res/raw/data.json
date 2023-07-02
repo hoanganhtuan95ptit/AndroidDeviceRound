@@ -1,0 +1,32 @@
+[
+  {
+    "name": "sdk_gphone64_arm64",
+    "timeUpdate": 0,
+    "radius": [
+      98,
+      98,
+      98,
+      98
+    ]
+  },
+  {
+    "name": "Pixel 3",
+    "timeUpdate": 0,
+    "radius": [
+      44,
+      44,
+      44,
+      44
+    ]
+  },
+  {
+    "name": "Pixel 5",
+    "timeUpdate": 0,
+    "radius": [
+      100,
+      100,
+      100,
+      100
+    ]
+  }
+]
