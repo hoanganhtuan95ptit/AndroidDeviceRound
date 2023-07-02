@@ -34,6 +34,8 @@ class ApiSyncTask(
             it.name.equals(param.deviceModel, true)
         }?.let {
 
+            it.timeUpdate = System.currentTimeMillis()
+
             sharedPreferences.edit().putString(DeviceRound.KEY, it.toJson()).apply()
         }
     }
