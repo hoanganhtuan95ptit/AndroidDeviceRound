@@ -1,0 +1,4 @@
+rootProject.name = "DeviceRound"
+
+include ':app'
+include ':lib'
