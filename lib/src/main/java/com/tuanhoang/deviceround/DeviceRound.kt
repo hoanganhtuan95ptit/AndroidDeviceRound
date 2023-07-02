@@ -10,6 +10,7 @@ import com.one.task.executeAsyncAll
 import com.tuanhoang.deviceround.data.task.ApiSyncTask
 import com.tuanhoang.deviceround.data.task.DefaultSyncTask
 import com.tuanhoang.deviceround.data.task.SyncParam
+import com.tuanhoang.deviceround.data.task.SyncTask
 import com.tuanhoang.deviceround.entities.DeviceInfo
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -33,13 +34,23 @@ object DeviceRound {
     private var sharedPreferences: SharedPreferences? = null
 
 
-    fun init(context: Context, retrofit: Retrofit, _sharedPreferences: SharedPreferences) = with(ProcessLifecycleOwner.get()) {
+    fun init(context: Context, _sharedPreferences: SharedPreferences, retrofit: Retrofit? = null) = with(ProcessLifecycleOwner.get()) {
 
         sharedPreferences = _sharedPreferences
 
         lifecycleScope.launch(handler + Dispatchers.IO) {
 
-            listOf(DefaultSyncTask(context, _sharedPreferences), ApiSyncTask(retrofit, _sharedPreferences)).executeAsyncAll(SyncParam(android.os.Build.MODEL)).collect()
+            val list = arrayListOf<SyncTask>()
+
+            let {
+                list.add(DefaultSyncTask(context, _sharedPreferences))
+            }
+
+            if (retrofit != null) {
+                list.add(ApiSyncTask(retrofit, _sharedPreferences))
+            }
+
+            list.executeAsyncAll(SyncParam(android.os.Build.MODEL)).collect()
         }
     }
 

@@ -24,7 +24,7 @@ class DefaultSyncTask(
 
     override suspend fun executeTask(param: SyncParam) {
 
-        if (sharedPreferences.getString(DeviceRound.KEY, "")?.isNotBlank() == true) {
+        if (!BuildConfig.DEBUG && sharedPreferences.getString(DeviceRound.KEY, "")?.isNotBlank() == true) {
 
             throw LowException("break")
         }

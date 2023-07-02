@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="RoundedConstraintLayout">
+    <declare-styleable name="RoundedImageView">
         <attr name="radius" format="dimension"/>
         <attr name="topLeftRadius" format="dimension" />
         <attr name="topRightRadius" format="dimension" />

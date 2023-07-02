@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             .client(okHttpClient)
             .build()
 
-        DeviceRound.init(this, retrofit, getSharedPreferences("", MODE_PRIVATE))
+        DeviceRound.init(this, getSharedPreferences("", MODE_PRIVATE), retrofit)
 
         binding = com.tuanhoang.deviceround.example.databinding.ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
