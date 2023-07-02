@@ -1,4 +1,4 @@
-package com.tuanhoang.deviceround.example
+package com.simple.hackbottomsheet.ui.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,9 +6,10 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.annotation.Px
-import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.tuanhoang.deviceround.example.R
 
-class RoundedImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatImageView(context, attrs, defStyleAttr) {
+class RoundedConstraintLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private val radii: FloatArray
 
@@ -19,16 +20,14 @@ class RoundedImageView @JvmOverloads constructor(context: Context, attrs: Attrib
 
 
     init {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundedImageView, defStyleAttr, 0)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundedConstraintLayout, defStyleAttr, 0)
 
-        this.adjustViewBounds = typedArray.getBoolean(R.styleable.RoundedImageView_android_adjustViewBounds, true)
+        val radius = typedArray.getDimension(R.styleable.RoundedConstraintLayout_radius, 0f)
 
-        val radius = typedArray.getDimension(R.styleable.RoundedImageView_radius, 0f)
-
-        val topLeftRadius = typedArray.getDimension(R.styleable.RoundedImageView_topLeftRadius, radius)
-        val topRightRadius = typedArray.getDimension(R.styleable.RoundedImageView_topRightRadius, radius)
-        val bottomLeftRadius = typedArray.getDimension(R.styleable.RoundedImageView_bottomLeftRadius, radius)
-        val bottomRightRadius = typedArray.getDimension(R.styleable.RoundedImageView_bottomRightRadius, radius)
+        val topLeftRadius = typedArray.getDimension(R.styleable.RoundedConstraintLayout_topLeftRadius, radius)
+        val topRightRadius = typedArray.getDimension(R.styleable.RoundedConstraintLayout_topRightRadius, radius)
+        val bottomLeftRadius = typedArray.getDimension(R.styleable.RoundedConstraintLayout_bottomLeftRadius, radius)
+        val bottomRightRadius = typedArray.getDimension(R.styleable.RoundedConstraintLayout_bottomRightRadius, radius)
 
         radii = floatArrayOf(topLeftRadius, topLeftRadius, topRightRadius, topRightRadius, bottomRightRadius, bottomRightRadius, bottomLeftRadius, bottomLeftRadius)
 
@@ -38,7 +37,7 @@ class RoundedImageView @JvmOverloads constructor(context: Context, attrs: Attrib
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
-        mainRectF.set(0f + paddingLeft, 0f + paddingTop, width.toFloat() - paddingRight, height.toFloat() - paddingBottom)
+        mainRectF.set(0f, 0f, width.toFloat(), height.toFloat())
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -62,14 +61,17 @@ class RoundedImageView @JvmOverloads constructor(context: Context, attrs: Attrib
                 radii[0] = radius.toFloat()
                 radii[1] = radius.toFloat()
             }
+
             Corner.TOP_RIGHT -> {
                 radii[2] = radius.toFloat()
                 radii[3] = radius.toFloat()
             }
+
             Corner.BOTTOM_RIGHT -> {
                 radii[4] = radius.toFloat()
                 radii[5] = radius.toFloat()
             }
+
             Corner.BOTTOM_LEFT -> {
                 radii[6] = radius.toFloat()
                 radii[7] = radius.toFloat()
@@ -77,6 +79,20 @@ class RoundedImageView @JvmOverloads constructor(context: Context, attrs: Attrib
 
             else -> {}
         }
+    }
+
+    fun setRadius(list: List<Int>) {
+
+        radii[0] = list[0].toFloat()
+        radii[1] = list[0].toFloat()
+        radii[2] = list[0].toFloat()
+        radii[3] = list[0].toFloat()
+        radii[4] = list[0].toFloat()
+        radii[5] = list[0].toFloat()
+        radii[6] = list[0].toFloat()
+        radii[7] = list[0].toFloat()
+
+        postInvalidate()
     }
 
     private fun bytefill(array: FloatArray, value: Int) {

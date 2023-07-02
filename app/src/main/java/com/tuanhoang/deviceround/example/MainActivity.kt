@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
             DeviceRound.fetchRoundAsync().collect {
 
                 Log.d("tuanha", "onCreate: ${Thread.currentThread().name} ${it?.map { it.toString() }}")
+
+                binding.rounded.setRadius(it ?: return@collect)
             }
         }
     }

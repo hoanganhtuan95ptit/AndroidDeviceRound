@@ -7,10 +7,11 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <com.tuanhoang.deviceround.example.RoundedImageView
+    <com.simple.hackbottomsheet.ui.view.RoundedConstraintLayout
         android:id="@+id/rounded"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="2dp"
         android:src="#5b5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
